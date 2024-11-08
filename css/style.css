@@ -39,15 +39,8 @@ h1, h2, h3 {
 /* Navigation */
 .navbar {
     background: linear-gradient(135deg, var(--dark-color) 0%, var(--secondary-color) 100%) !important;
-    border-bottom: 3px solid var(--primary-color);
     padding: 1rem 0;
     transition: all 0.3s ease;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1030;
-    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .navbar.scrolled {
@@ -1283,4 +1276,33 @@ html, body {
     .nav-link:nth-child(2) { transition-delay: 0.2s; }
     .nav-link:nth-child(3) { transition-delay: 0.3s; }
     .nav-link:nth-child(4) { transition-delay: 0.4s; }
+}
+
+/* Desktop Navigation */
+@media (min-width: 992px) {
+    .navbar-collapse {
+        display: flex !important;
+        opacity: 1 !important;
+        transform: none !important;
+        height: auto !important;
+        pointer-events: auto !important;
+    }
+
+    .nav-link {
+        color: var(--light-bg) !important;
+        padding: 0.5rem 1.5rem !important;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--primary-color) !important;
+    }
+}
+
+/* Mobile Navigation */
+@media (max-width: 991px) {
+    .navbar-collapse:not(.show) {
+        display: none;
+    }
 }

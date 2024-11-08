@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Navbar scroll effect
+    // Updated Navbar scroll effect
     let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar');
     const scrollThreshold = 100;
@@ -33,15 +33,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (currentScroll > scrollThreshold) {
             if (currentScroll < lastScrollTop) {
+                // Scrolling UP - show navbar
                 navbar.style.transform = 'translateY(0)';
                 navbar.style.opacity = '1';
+                navbar.style.position = 'fixed';
+                navbar.style.top = '0';
+                navbar.style.width = '100%';
+                navbar.style.zIndex = '1000';
             } else {
+                // Scrolling DOWN - hide navbar
                 navbar.style.transform = 'translateY(-100%)';
                 navbar.style.opacity = '0';
             }
         } else {
+            // At the top - show navbar
             navbar.style.transform = 'translateY(0)';
             navbar.style.opacity = '1';
+            navbar.style.position = 'relative';
         }
         
         lastScrollTop = currentScroll;

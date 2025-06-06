@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Scroll to top on page reload
     window.onbeforeunload = function () {
         window.scrollTo(0, 0);
-    }
+    };
 
     // Force scroll to top when page loads
     if (history.scrollRestoration) {
@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const scrollThreshold = 100;
     
     window.addEventListener('scroll', function() {
-        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        let currentScroll = window.pageYOffset ||
+            document.documentElement.scrollTop;
         
         if (currentScroll > scrollThreshold) {
             if (currentScroll < lastScrollTop) {

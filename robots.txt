@@ -3,4 +3,4 @@ Allow: /
 Sitemap: https://vijayasaiphotoframes.com/sitemap.xml
 Disallow: /cgi-bin/
 Disallow: /tmp/
-Disallow: /private/ 
+Disallow: /private/

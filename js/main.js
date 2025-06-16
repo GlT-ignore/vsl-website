@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Scroll to top on page reload
     window.onbeforeunload = function () {
         window.scrollTo(0, 0);
-    }
+    };
 
     // Force scroll to top when page loads
     if (history.scrollRestoration) {
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar');
     const scrollThreshold = 100;
-    
+
     window.addEventListener('scroll', function() {
         let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         if (currentScroll > scrollThreshold) {
             if (currentScroll < lastScrollTop) {
                 // Scrolling UP - show navbar
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.style.opacity = '1';
             navbar.style.position = 'relative';
         }
-        
+
         lastScrollTop = currentScroll;
     });
 
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const counter = entry.target;
-                    const target = parseInt(counter.getAttribute('data-target'));
+                    const target = parseInt(counter.getAttribute('data-target'), 10);
                     animateCounter(counter, target);
                     observer.unobserve(counter);
                 }
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            
+
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',

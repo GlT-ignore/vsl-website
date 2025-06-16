@@ -15,20 +15,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const html = document.documentElement;
     const body = document.body;
 
-    if (loader) {
-        html.classList.add('no-scroll');
-        body.classList.add('no-scroll');
+    const toggleNoScroll = (state) => {
+        html.classList.toggle('no-scroll', state);
+        body.classList.toggle('no-scroll', state);
+    };
 
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                loader.classList.add('fade-out');
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                    html.classList.remove('no-scroll');
-                    body.classList.remove('no-scroll');
-                }, 500);
-            }, 1000);
-        });
+    if (loader) {
+        const PAGE_LOAD_DELAY = 1000;
+        const FADE_OUT_DELAY = 500;
+
+        const hideLoader = () => {
+            loader.classList.add('fade-out');
+            setTimeout(() => {
+                loader.style.display = 'none';
+                toggleNoScroll(false);
+            }, FADE_OUT_DELAY);
+        };
+
+        toggleNoScroll(true);
+        window.addEventListener('load', () => setTimeout(hideLoader, PAGE_LOAD_DELAY));
     }
 
     // Updated Navbar scroll effect

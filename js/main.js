@@ -12,20 +12,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Loading animation
     const loader = document.querySelector('.page-loader');
+    const html = document.documentElement;
     const body = document.body;
 
-    if (loader) {
-        body.classList.add('no-scroll');
+    const toggleNoScroll = (state) => {
+        html.classList.toggle('no-scroll', state);
+        body.classList.toggle('no-scroll', state);
+    };
 
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                loader.classList.add('fade-out');
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                    body.classList.remove('no-scroll');
-                }, 500);
-            }, 1000);
-        });
+    if (loader) {
+        const PAGE_LOAD_DELAY = 1000;
+        const FADE_OUT_DELAY = 500;
+
+        const hideLoader = () => {
+            loader.classList.add('fade-out');
+            setTimeout(() => {
+                loader.style.display = 'none';
+                toggleNoScroll(false);
+                initCounterObserver();
+            }, FADE_OUT_DELAY);
+        };
+
+        toggleNoScroll(true);
+        window.addEventListener('load', () => setTimeout(hideLoader, PAGE_LOAD_DELAY));
+    } else {
+        // If no loader is present, start counters immediately
+        initCounterObserver();
     }
 
     // Updated Navbar scroll effect
@@ -79,42 +91,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Counter Animation with Intersection Observer
-    const counters = document.querySelectorAll('.counter');
-    
-    const animateCounter = (counter, target) => {
-        const speed = 200;
-        const increment = target / speed;
-        let currentCount = 0;
+    function initCounterObserver() {
+        const counters = document.querySelectorAll('.counter');
 
-        const updateCount = () => {
-            if (currentCount < target) {
-                currentCount = Math.ceil(currentCount + increment);
-                counter.innerText = currentCount;
-                requestAnimationFrame(updateCount);
-            } else {
-                counter.innerText = target;
-            }
+        const animateCounter = (counter, target) => {
+            const speed = 200;
+            const increment = target / speed;
+            let currentCount = 0;
+
+            const updateCount = () => {
+                if (currentCount < target) {
+                    currentCount = Math.ceil(currentCount + increment);
+                    counter.innerText = currentCount;
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+
+            updateCount();
         };
 
-        updateCount();
-    };
-
-    const counterObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counter = entry.target;
-                const target = parseInt(counter.getAttribute('data-target'));
-                animateCounter(counter, target);
-                observer.unobserve(counter);
-            }
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    animateCounter(counter, target);
+                    observer.unobserve(counter);
+                }
+            });
+        }, {
+            threshold: 0.3
         });
-    }, {
-        threshold: 0.3
-    });
 
-    counters.forEach(counter => {
-        counterObserver.observe(counter);
-    });
+        counters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
+    }
 
     // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

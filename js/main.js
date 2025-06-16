@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const counter = entry.target;
-                const target = parseInt(counter.getAttribute('data-target'));
+                const target = parseInt(counter.getAttribute('data-target'), 10);
                 animateCounter(counter, target);
                 observer.unobserve(counter);
             }

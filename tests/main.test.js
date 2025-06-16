@@ -54,11 +54,13 @@ describe('Animation and loader behaviors', () => {
   test('scroll is disabled during load and enabled after loader hides', () => {
     const loader = document.querySelector('.page-loader');
     expect(document.body.classList.contains('no-scroll')).toBe(true);
+    expect(document.documentElement.classList.contains('no-scroll')).toBe(true);
 
     window.dispatchEvent(new Event('load'));
     jest.advanceTimersByTime(1500);
 
     expect(loader.style.display).toBe('none');
     expect(document.body.classList.contains('no-scroll')).toBe(false);
+    expect(document.documentElement.classList.contains('no-scroll')).toBe(false);
   });
 });

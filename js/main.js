@@ -12,12 +12,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Loading animation
     const loader = document.querySelector('.page-loader');
+    const body = document.body;
+
     if (loader) {
+        body.classList.add('no-scroll');
+
         window.addEventListener('load', function() {
             setTimeout(function() {
                 loader.classList.add('fade-out');
                 setTimeout(function() {
                     loader.style.display = 'none';
+                    body.classList.remove('no-scroll');
                 }, 500);
             }, 1000);
         });

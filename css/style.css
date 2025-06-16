@@ -1135,6 +1135,11 @@ html, body {
     }
 }
 
+body.no-scroll {
+    overflow: hidden;
+    height: 100%;
+}
+
 /* Loading Animation Styles */
 .page-loader {
     position: fixed;

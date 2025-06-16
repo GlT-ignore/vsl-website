@@ -1135,6 +1135,8 @@ html, body {
     }
 }
 
+/* Prevent background scrolling while loader is visible */
+
 html.no-scroll,
 body.no-scroll {
     overflow: hidden;

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Scroll to top on page reload
     window.onbeforeunload = function () {
         window.scrollTo(0, 0);
-    }
+    };
 
     // Force scroll to top when page loads
     if (history.scrollRestoration) {
@@ -15,30 +15,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const html = document.documentElement;
     const body = document.body;
 
-    if (loader) {
-        html.classList.add('no-scroll');
-        body.classList.add('no-scroll');
+    const toggleNoScroll = (state) => {
+        html.classList.toggle('no-scroll', state);
+        body.classList.toggle('no-scroll', state);
+    };
 
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                loader.classList.add('fade-out');
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                    html.classList.remove('no-scroll');
-                    body.classList.remove('no-scroll');
-                }, 500);
-            }, 1000);
-        });
+    if (loader) {
+        const PAGE_LOAD_DELAY = 1000;
+        const FADE_OUT_DELAY = 500;
+
+        const hideLoader = () => {
+            loader.classList.add('fade-out');
+            setTimeout(() => {
+                loader.style.display = 'none';
+                toggleNoScroll(false);
+                initCounterObserver();
+            }, FADE_OUT_DELAY);
+        };
+
+        toggleNoScroll(true);
+        window.addEventListener('load', () => setTimeout(hideLoader, PAGE_LOAD_DELAY));
+    } else {
+        // If no loader is present, start counters immediately
+        initCounterObserver();
     }
 
     // Updated Navbar scroll effect
     let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar');
     const scrollThreshold = 100;
-    
+
     window.addEventListener('scroll', function() {
         let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         if (currentScroll > scrollThreshold) {
             if (currentScroll < lastScrollTop) {
                 // Scrolling UP - show navbar
@@ -59,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.style.opacity = '1';
             navbar.style.position = 'relative';
         }
-        
+
         lastScrollTop = currentScroll;
     });
 
@@ -82,49 +91,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Counter Animation with Intersection Observer
-    const counters = document.querySelectorAll('.counter');
-    
-    const animateCounter = (counter, target) => {
-        const speed = 200;
-        const increment = target / speed;
-        let currentCount = 0;
+    function initCounterObserver() {
+        const counters = document.querySelectorAll('.counter');
 
-        const updateCount = () => {
-            if (currentCount < target) {
-                currentCount = Math.ceil(currentCount + increment);
-                counter.innerText = currentCount;
-                requestAnimationFrame(updateCount);
-            } else {
-                counter.innerText = target;
-            }
+        const animateCounter = (counter, target) => {
+            const speed = 200;
+            const increment = target / speed;
+            let currentCount = 0;
+
+            const updateCount = () => {
+                if (currentCount < target) {
+                    currentCount = Math.ceil(currentCount + increment);
+                    counter.innerText = currentCount;
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+
+            updateCount();
         };
 
-        updateCount();
-    };
-
-    const counterObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counter = entry.target;
-                const target = parseInt(counter.getAttribute('data-target'), 10);
-                animateCounter(counter, target);
-                observer.unobserve(counter);
-            }
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target'), 10);
+                    animateCounter(counter, target);
+                    observer.unobserve(counter);
+                }
+            });
+        }, {
+            threshold: 0.3
         });
-    }, {
-        threshold: 0.3
-    });
 
-    counters.forEach(counter => {
-        counterObserver.observe(counter);
-    });
+        counters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
+    }
 
     // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            
+
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',

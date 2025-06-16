@@ -37,8 +37,16 @@ describe('Animation and loader behaviors', () => {
     jest.resetModules();
   });
 
-  test('counter elements reach their target values', () => {
+  test('counter elements start counting after loader hides', () => {
     const counters = document.querySelectorAll('.counter');
+
+    counters.forEach(counter => {
+      expect(counter.textContent).toBe('0');
+    });
+
+    window.dispatchEvent(new Event('load'));
+    jest.advanceTimersByTime(1500);
+
     counters.forEach(counter => {
       expect(String(counter.innerText)).toBe(counter.getAttribute('data-target'));
     });

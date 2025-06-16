@@ -12,9 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Loading animation
     const loader = document.querySelector('.page-loader');
+    const html = document.documentElement;
     const body = document.body;
 
     if (loader) {
+        html.classList.add('no-scroll');
         body.classList.add('no-scroll');
 
         window.addEventListener('load', function() {
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 loader.classList.add('fade-out');
                 setTimeout(function() {
                     loader.style.display = 'none';
+                    html.classList.remove('no-scroll');
                     body.classList.remove('no-scroll');
                 }, 500);
             }, 1000);

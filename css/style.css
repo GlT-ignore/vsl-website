@@ -1135,6 +1135,7 @@ html, body {
     }
 }
 
+html.no-scroll,
 body.no-scroll {
     overflow: hidden;
     height: 100%;

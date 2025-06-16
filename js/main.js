@@ -14,24 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const loader = document.querySelector('.page-loader');
     const html = document.documentElement;
     const body = document.body;
-    const themeToggle = document.getElementById('theme-toggle');
-
-    if (themeToggle) {
-        const applyTheme = (isDark) => {
-            body.classList.toggle('dark-mode', isDark);
-            themeToggle.textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            themeToggle.classList.add('rotate');
-            setTimeout(() => themeToggle.classList.remove('rotate'), 500);
-        };
-
-        const stored = localStorage.getItem('theme') === 'dark';
-        if (stored) applyTheme(true);
-
-        themeToggle.addEventListener('click', () => {
-            applyTheme(!body.classList.contains('dark-mode'));
-        });
-    }
 
     const toggleNoScroll = (state) => {
         html.classList.toggle('no-scroll', state);

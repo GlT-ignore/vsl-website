@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     if (loader) {
-        const PAGE_LOAD_DELAY = 1000;
-        const FADE_OUT_DELAY = 500;
+        const PAGE_LOAD_DELAY = 200;
+        const FADE_OUT_DELAY = 300;
 
         const hideLoader = () => {
             loader.classList.add('fade-out');
@@ -40,17 +40,19 @@ document.addEventListener('DOMContentLoaded', function() {
         initCounterObserver();
     }
 
-    // Updated Navbar scroll effect
+    // Navbar scroll effect — throttled via requestAnimationFrame for INP safety
     let lastScrollTop = 0;
+    let scrollRafId = null;
     const navbar = document.querySelector('.navbar');
     const scrollThreshold = 100;
 
-    window.addEventListener('scroll', function() {
-        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    const handleNavbarScroll = () => {
+        scrollRafId = null;
+        if (!navbar) return;
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
         if (currentScroll > scrollThreshold) {
             if (currentScroll < lastScrollTop) {
-                // Scrolling UP - show navbar
                 navbar.style.transform = 'translateY(0)';
                 navbar.style.opacity = '1';
                 navbar.style.position = 'fixed';
@@ -58,19 +60,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 navbar.style.width = '100%';
                 navbar.style.zIndex = '1000';
             } else {
-                // Scrolling DOWN - hide navbar
                 navbar.style.transform = 'translateY(-100%)';
                 navbar.style.opacity = '0';
             }
         } else {
-            // At the top - show navbar
             navbar.style.transform = 'translateY(0)';
             navbar.style.opacity = '1';
             navbar.style.position = 'relative';
         }
 
         lastScrollTop = currentScroll;
-    });
+    };
+
+    window.addEventListener('scroll', () => {
+        if (scrollRafId === null) {
+            scrollRafId = window.requestAnimationFrame(handleNavbarScroll);
+        }
+    }, { passive: true });
 
     // Mobile menu toggle
     const menuToggle = document.querySelector('.navbar-toggler');

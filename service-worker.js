@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vsl-cache-v1';
+const CACHE_NAME = 'vsl-cache-v2-2026-04-15';
 const OFFLINE_URL = '/404.html';
 const URLS_TO_CACHE = [
   '/',
